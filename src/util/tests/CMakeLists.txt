@@ -1,5 +1,6 @@
 foreach(source_file
     IndexAllocator
+    NetUtil
 )
     set(test_file "test_${source_file}")
     add_executable("${test_file}" "${test_file}.cpp")
