@@ -29,7 +29,7 @@ include(FindPkgConfig)
 #include("cmake/SetupGRPC.cmake")
 #include("cmake/ProtoAutogen.cmake")
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
