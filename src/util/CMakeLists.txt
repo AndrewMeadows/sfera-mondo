@@ -2,17 +2,20 @@ set(TARGET_NAME "util")
 
 add_library( ${TARGET_NAME}
     IndexAllocator.h
+    ConfigUtil.cpp
+    ConfigUtil.h
     LogUtil.cpp
     LogUtil.h
     NetUtil.cpp
     NetUtil.h
     RandomUtil.cpp
     RandomUtil.h
+    ThreadPool.h
+    TimeUtil.cpp
+    TimeUtil.h
     TraceMacros.h
     TraceUtil.cpp
     TraceUtil.h
-    TimeUtil.cpp
-    TimeUtil.h
     Uuid.cpp
     Uuid.h
 )
