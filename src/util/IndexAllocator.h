@@ -23,8 +23,8 @@ public:
     {
     }
 
-    bool check(Index_t index) const {
-        return ((index >= 0) && (index < _nextNewIndex));
+    bool check(Index_t idx) const {
+        return ((idx >= 0) && (idx < _nextNewIndex));
     }
     Index_t getNumLive() const {
         return _nextNewIndex - (Index_t)(_freeIndices.size());
@@ -38,40 +38,39 @@ public:
 
     Index_t allocate() {
         if (_freeIndices.empty()) {
-            Index_t index = _nextNewIndex;
-            if (index >= _maxNumElements) { return INVALID_INDEX; }
+            Index_t idx = _nextNewIndex;
+            if (idx >= _maxNumElements) { return INVALID_INDEX; }
             _nextNewIndex++;
-            return index;
+            return idx;
         } else {
             if (!_freeIndicesAreSorted) {
-                // when recycling a free we sort (high to low) and use lowest
-                // index
+                // when recycling we sort (high to low) and use lowest index
                 std::sort(_freeIndices.begin(),
                           _freeIndices.end(),
                           std::greater<Index_t>());
                 _freeIndicesAreSorted = true;
             }
-            Index_t index = _freeIndices.back();
+            Index_t idx = _freeIndices.back();
             _freeIndices.pop_back();
 
             // in case an index was double-freed we check for dupe indices and
             // remove them
-            while (_freeIndices.size() > 0 && _freeIndices.back() == index) {
+            while (_freeIndices.size() > 0 && _freeIndices.back() == idx) {
                 _freeIndices.pop_back();
             }
-            return index;
+            return idx;
         }
     }
 
-    void free(Index_t index) {
-        if (check(index)) {
+    void free(Index_t idx) {
+        if (check(idx)) {
             if (_freeIndicesAreSorted && _freeIndices.size() > 0 &&
-                (index < _freeIndices.back())) {
+                (idx < _freeIndices.back())) {
                 _freeIndicesAreSorted = false;
             }
             // Note: double-free is allowed, we push_back
             // and deal with dupes later when recycling used indices
-            _freeIndices.push_back(index);
+            _freeIndices.push_back(idx);
         }
     }
 

@@ -2,8 +2,13 @@ set(TARGET_NAME "${PROJECT_NAME}_util")
 
 add_library( ${TARGET_NAME}
     IndexAllocator.h
+    LogUtil.cpp
+    LogUtil.h
     NetUtil.cpp
     NetUtil.h
+    TraceMacros.h
+    TraceUtil.cpp
+    TraceUtil.h
     TimeUtil.cpp
     TimeUtil.h
 )
