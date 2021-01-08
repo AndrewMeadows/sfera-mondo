@@ -1,11 +1,23 @@
 # sfera-mondo
+
 C++ utilities for spherical world simulation
 
+# Tools
+
+```
+sudo apt-get install cmake make g++
+
+```
 # Dependencies
-cmake
-conan
-glm
-nlohmann-json
+```
+sudo apt-get install libglm-dev libgtest-dev libnlohman-json3-dev libtclap-dev
+```
 
 # To Build
-./build.sh
+
+```
+mkdir build
+cd build
+cmake ../
+make
+```

@@ -96,3 +96,8 @@ TEST(NetUtil_test, ip_port_from_uri) {
         EXPECT_EQ(-1, port);
     }
 }
+
+int main(int32_t argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

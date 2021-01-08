@@ -150,3 +150,8 @@ TEST(IndexAllocator_test, allocate_free_clear_16) {
     EXPECT_EQ(0, allocator.getNumFree());
     EXPECT_EQ(0, allocator.getNumAllocated());
 }
+
+int main(int32_t argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

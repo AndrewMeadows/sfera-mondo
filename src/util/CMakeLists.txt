@@ -1,4 +1,4 @@
-set(TARGET_NAME "util")
+set(TARGET_NAME "sferamondo_util")
 
 add_library( ${TARGET_NAME}
     IndexAllocator.h
@@ -22,16 +22,9 @@ add_library( ${TARGET_NAME}
 
 target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
-if (${APPLE})
-    target_link_libraries(${TARGET_NAME}
-        "-framework CoreFoundation"
-        ${CONAN_LIBS}
-    )
-else()
-    target_link_libraries( ${TARGET_NAME}
-        PUBLIC
-        ${CONAN_LIBS}
-    )
-endif()
+target_link_libraries( ${TARGET_NAME}
+    PUBLIC
+    fmt
+)
 
 add_subdirectory(tests)
