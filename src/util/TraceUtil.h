@@ -199,26 +199,26 @@ private:
     void operator=(Tracer const&); // Don't implement
 };
 
-// TraceContext creates a DurationBegin event in ctor
+// Context creates a DurationBegin event in ctor
 // and an DurationEnd event in dtor
-class TraceContext {
+class Context {
 public:
-    TraceContext(const std::string& name, const std::string& cat)
+    Context(const std::string& name, const std::string& cat)
         : _name(name), _cat(cat)
     {
         Tracer::instance().addEvent(_name, _cat, Phase::DurationBegin);
     }
-    ~TraceContext() {
+    ~Context() {
         Tracer::instance().addEvent(_name, _cat, Phase::DurationEnd);
     }
     std::string _name;
     std::string _cat;
 };
 
-// TraceToFile is a simple consumer for saving events to file
-class TraceToFile : public Tracer::Consumer {
+// WriteToFile is a simple consumer for saving events to file
+class WriteToFile : public Tracer::Consumer {
 public:
-    TraceToFile(uint64_t lifetime, const std::string& filename);
+    WriteToFile(uint64_t lifetime, const std::string& filename);
     void consumeEvents(const std::vector<std::string>& events) final override;
     void finish(const std::vector<std::string>& meta_events) final override;
     bool isOpen() const { return _stream.is_open(); }

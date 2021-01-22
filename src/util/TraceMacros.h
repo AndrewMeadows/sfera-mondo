@@ -18,22 +18,22 @@
     //     Only one per scope, but you can add to embedded scopes.
     //
     // (2) Implement a custom Consumer class to handle trace events
-    //     or use TraceUtil::TraceToFile consumer to write to file.
+    //     or use TraceUtil::WriteToFile.
     //
-    // (3) Add consumer to Tracer. This will enable trace events.
+    // (3) Add Consumer to Tracer. This will enable trace events.
     //
-    // (4) Every so often (e.g. inside mainloop):
+    // (4) Every so often (e.g. inside mainloop) do the following:
     //
-    //   (4A) call TRACE_ADVANCE_CONSUMERS
+    //   (A) call TRACE_ADVANCE_CONSUMERS
     //
-    //   (4B) when consumer->isComplete() --> delete it
-    //        (it has automatically been removed from Tracer)
+    //   (B) when Consumer->isComplete() --> delete it
+    //        (it will have been automatically removed from Tracer)
     //
-    // (5) When Tracer has no consumers it stops collecting trace
+    // (5) When Tracer has no Consumers it stops collecting trace
     //     events.
     //
     // (6) Add TRACE_SHUTDOWN after mainloop exits in case there
-    //     are unfinished consumers on shutdown.
+    //     are unfinished Consumers on shutdown.
     //
 
     #define TRACE_ADVANCE_CONSUMERS ::TraceUtil::Tracer::instance().advanceConsumers()
@@ -45,7 +45,7 @@
     #define TRACE_THREAD_SORT(idx) ::TraceUtil::Tracer::instance().addMetaEvent("thread_sort_index", idx)
 
     // use TRACE_CONTEXT for easy Duration events
-    #define TRACE_CONTEXT(name, cat) ::TraceUtil::Trace_context trace_context(name, cat)
+    #define TRACE_CONTEXT(name, cat) ::TraceUtil::Context trace_context(name, cat)
 
     // use TRACE_BEGIN/END only if you know what you're doing
     // and TRACE_CONTEXT doesn't work for you

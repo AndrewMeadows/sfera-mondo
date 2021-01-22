@@ -237,7 +237,7 @@ void Tracer::removeConsumer(Tracer::Consumer* consumer) {
     }
 }
 
-TraceToFile::TraceToFile(uint64_t lifetime, const std::string& filename)
+WriteToFile::WriteToFile(uint64_t lifetime, const std::string& filename)
     : Tracer::Consumer(lifetime), _file(filename)
 {
     _stream.open(_file);
@@ -250,7 +250,7 @@ TraceToFile::TraceToFile(uint64_t lifetime, const std::string& filename)
     }
 }
 
-void TraceToFile::consumeEvents(const std::vector<std::string>& events) {
+void WriteToFile::consumeEvents(const std::vector<std::string>& events) {
     if (_stream.is_open()) {
         for (const auto& event : events) {
             _stream << event << ",\n";
@@ -258,7 +258,7 @@ void TraceToFile::consumeEvents(const std::vector<std::string>& events) {
     }
 }
 
-void TraceToFile::finish(const std::vector<std::string>& meta_events) {
+void WriteToFile::finish(const std::vector<std::string>& meta_events) {
     Tracer::Consumer::finish(meta_events);
     if (_stream.is_open()) {
         // TRICK: end with bogus "complete" event sans ending comma
