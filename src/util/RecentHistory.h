@@ -12,8 +12,6 @@
 
 #include <glm/glm.hpp>
 
-namespace sora {
-
 template < typename Event >
 class RecentHistory {
 public:
@@ -36,7 +34,7 @@ public:
         _events.resize(_ringCapacity);
     }
 
-    uint32_t get_size() const {
+    uint32_t getSize() const {
         return (_head >= _tail) ?
             _head - _tail :
             _ringCapacity - (_tail - _head);
@@ -80,7 +78,7 @@ public:
             // wants a future version --> fail
             return false;
         }
-        uint32_t snake_length = get_size();
+        uint32_t snake_length = getSize();
         if (version < _version - snake_length) {
             // wants a version lost to history --> fail
             return false;
@@ -122,8 +120,6 @@ private:
     uint32_t _tail {0};
     uint32_t _head {0};
     uint32_t _ringCapacity {0};
-    uint32_t _version {1};
+    uint32_t _version {0};
     std::vector<Event> _events;
 };
-
-} // namespace sore

@@ -54,5 +54,5 @@ namespace ConfigUtil {
         uint32_t _version { 1 };
         mutable std::mutex _mutex;
     };
-} // namespace sora::config_util
+} // namespace ConfigUtil
 
