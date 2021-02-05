@@ -1,0 +1,57 @@
+// mondo.proto
+//
+syntax = "proto3";
+
+// As per the google style guide:
+//
+// https://developers.google.com/protocol-buffers/docs/style
+//
+// use 2-space indentation
+// use CamelCase for message names
+// use lower_snake_case for field names
+// use pluralized names for repeated fields
+// use CamelCase for enum type names and ALL_CAPS for enum values
+// use CamelCase for service names and also for service methods
+
+package mondo;
+
+// This is an attempt to define an absolute minimal proto while supporting
+// login, all four forms of gRPC transmission, while also making easy to
+// send custom arbitrary data (blobs).
+
+// 'Blob' is like a MIME block: it has a 'type', and an embedded binary 'msg'
+// which is a binary dump of a protobuf message defined in some other proto
+// file.  It is the responsibility of each app to pack/unpack its custom Blobs.
+//
+message Blob {
+  uint32 type = 1;
+  bytes msg = 2;
+}
+
+message LoginRequest {
+  string user = 1;
+  string password = 2;
+  repeated Blob blobs = 3;
+}
+
+// 'secret' is a per-session token used to authenticate all future calls
+// The Server will revoke the session secret at its liesure.
+message Input {
+  uint64 secret = 1;
+  repeated Blob blobs = 2;
+}
+
+// When Output.success is 'false' then Input.secret has been revoked
+// by the Server and the Client must start a new session.
+message Output {
+  bool success = 1;
+  repeated Blob blobs = 2;
+}
+
+service DataService {
+  rpc StartSession (LoginRequest) returns (Input) {}
+  rpc SendInput (Input) returns (Output) {}
+  rpc StreamInput (stream Input) returns (Output) {}
+  rpc StreamOutput (Input) returns (stream Output) {}
+  rpc StreamInputOutput (stream Input) returns (stream Output) {}
+}
