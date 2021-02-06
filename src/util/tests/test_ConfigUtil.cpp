@@ -67,6 +67,11 @@ public:
 
     // required overrides
     nlohmann::json getJson() const override {
+        // True, out tests don't need to be paranoid about thread safety
+        // but locking the _mutex here done anyway to remind future devs
+        // that Configs are intended to be used to communicate across
+        // multiple threads.
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         json obj;
         obj["word"] = _word;
         obj["number"] = _number;
@@ -79,6 +84,7 @@ public:
     }
 
     void updateJson(const nlohmann::json& obj) override {
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         bool something_changed = false;
         if (obj.contains("word") && obj["word"].is_string()) {
             _word = obj["word"];
@@ -103,6 +109,7 @@ public:
     }
 
     void setWord(const std::string& word) {
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         if (word != _word) {
             _word = word;
             bumpVersion();
@@ -110,6 +117,7 @@ public:
     }
 
     void setNumber(int32_t number) {
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         if (number != _number) {
             _number = number;
             bumpVersion();
@@ -117,6 +125,7 @@ public:
     }
 
     void setData(const std::vector<Datum>& data) {
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         bool something_changed = false;
         size_t num_data = data.size();
         if (num_data != _data.size()) {
@@ -143,6 +152,7 @@ public:
     }
 
     bool operator==(const TestConfig& other) {
+        std::unique_lock<decltype(_mutex)> lock(_mutex);
         if (_word != other._word
             || _number != other._number
             || _data.size() != other._data.size())

@@ -54,8 +54,8 @@ namespace ConfigUtil {
         std::string _name;
         std::filesystem::path _filePath;
         std::filesystem::file_time_type _lastFileWrite;
-        uint32_t _version { 0 };
         mutable std::mutex _mutex;
+        uint32_t _version { 0 };
     };
 } // namespace ConfigUtil
 
