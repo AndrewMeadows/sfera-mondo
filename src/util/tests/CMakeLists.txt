@@ -1,4 +1,5 @@
 foreach(source_file
+    ConfigUtil
     IndexAllocator
     NetUtil
     RecentHistory

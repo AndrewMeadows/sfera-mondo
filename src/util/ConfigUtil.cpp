@@ -53,7 +53,6 @@ bool ConfigInterface::readFileIfChanged() {
                 input_stream.close();
                 updateJson(json_obj);
                 _lastFileWrite = last_write;
-                bumpVersion();
             } else {
                 LOG1("unable to read from config_file='{}'\n", _filePath.string());
                 return false;
@@ -85,7 +84,6 @@ bool ConfigInterface::writeFile() {
         } catch (const std::exception& e) {
             LOG1("error: config_file='{}' err='{}'\n", _filePath.string(), e.what());
         }
-        bumpVersion();
         return true;
     } else {
         LOG1("unable to write to config_file='{}'\n", _filePath.string());

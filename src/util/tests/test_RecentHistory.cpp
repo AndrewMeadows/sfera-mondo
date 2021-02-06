@@ -26,8 +26,6 @@ using History = RecentHistory<Event>;
 bool approximately_equal(const glm::quat& A, const glm::quat& B) {
     constexpr float DOT_PRODUCT_SLOP = 8.0e-7; // ~0.1 degree of error
     float dot_product = std::abs(glm::dot(A, B));
-    fmt::print("adebug approximately_equal A=<{},{},{},{}> B=<{},{},{},{}> (1.0-dp)={}\n",
-            A.w, A.x, A.y, A.z, B.w, B.x, B.y, B.z, std::abs(1.0f - dot_product));
     return std::abs(1.0f - dot_product) < DOT_PRODUCT_SLOP;
 }
 
@@ -83,7 +81,6 @@ TEST(RecentHistory_test, normal_operation) {
         Event event = glm::angleAxis(ANGLE, axis);
         events.push_back(event);
     }
-    fmt::print("adebug wtf?\n");
 
     // precompute the accumulated rotations to use when verifying Consumer state
     std::vector<Event> accumulated_rotations;
@@ -92,7 +89,6 @@ TEST(RecentHistory_test, normal_operation) {
     for (uint32_t i = 0; i < num_events; ++i) {
         Q = glm::normalize(Q * events[i]);
         accumulated_rotations.push_back(Q);
-        fmt::print("adebug {} : <{}, {}, {}, {}>\n", i, Q.w, Q.x, Q.y, Q.z);
     }
 
     // add some (but not all) events to history
@@ -113,8 +109,6 @@ TEST(RecentHistory_test, normal_operation) {
     // verfiy rotator_A has processed the events in the correct order
     EXPECT_EQ(rotator_A.getVersion(), history.getVersion());
     uint32_t qidx = rotator_A.getVersion() - 1;
-    glm::quat Qa = rotator_A.getRotation();
-    fmt::print("adebug qidx={}  version={}  Q=<{}, {}, {}, {}>\n", qidx, rotator_A.getVersion(), Qa.w, Qa.x, Qa.y, Qa.z);
     EXPECT_TRUE(approximately_equal(rotator_A.getRotation(), accumulated_rotations[qidx]));
 
     // add some more events to history

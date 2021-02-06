@@ -47,6 +47,8 @@ namespace ConfigUtil {
         uint32_t getVersion() const { return _version; }
 
     protected:
+        // call this in derived class after any internal parameter changes
+        // to allow Config watchers to easily notice version mismatch
         void bumpVersion() { ++_version; }
 
         std::string _name;
