@@ -17,6 +17,12 @@ std::random_device rd;  // used to obtain a seed for the random number engine
 std::mt19937 gen(rd()); // standard mersenne_twister_engine seeded with rd()
 std::uniform_int_distribution<uint64_t> dis(0, UINT64_MAX);
 
+Uuid Uuid::newUuid() {
+    Uuid id;
+    id.generate();
+    return id;
+}
+
 void Uuid::generate() {
     _data[0] = dis(gen); // low half
     _data[1] = dis(gen); // high half

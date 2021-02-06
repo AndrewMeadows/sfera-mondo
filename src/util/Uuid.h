@@ -10,6 +10,8 @@
 
 class Uuid {
 public:
+    static Uuid newUuid();
+
     Uuid() { }
     ~Uuid() { }
 
