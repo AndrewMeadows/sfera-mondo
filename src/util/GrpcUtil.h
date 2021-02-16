@@ -146,10 +146,10 @@ private:
 //
 // Using an asynchronous Server is not recommended.
 //
-class Server {
+class AsynchServer {
 public:
-    Server() {}
-    virtual ~Server();
+    AsynchServer() {}
+    virtual ~AsynchServer();
 
     void buildService(uint32_t port);
 
@@ -334,10 +334,10 @@ private:
 };
 */
 
-// The Server implementation might look something like this:
+// The AsynchServer implementation might look something like this:
 
 /*
-class Fubar_server : public GrpcUtil::Server {
+class FubarServer : public GrpcUtil::AsynchServer {
 public:
     Fubar_server(int32_t port) {
         buildService(port);
