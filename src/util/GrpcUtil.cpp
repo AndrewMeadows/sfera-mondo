@@ -91,14 +91,14 @@ void Client::setStub(void* stub) {
 //#include <string>
 
 
-Server::~Server() {
+AsynchServer::~AsynchServer() {
     // drain queue before delete, else will assert
     void* ignored_tag;
     bool ignored_ok;
     while (_queue->Next(&ignored_tag, &ignored_ok)) { }
 }
 
-void Server::buildService(uint32_t port) {
+void AsynchServer::buildService(uint32_t port) {
     _port = port;
     grpc::ServerBuilder builder;
 
@@ -116,7 +116,7 @@ void Server::buildService(uint32_t port) {
     _grpcServer = builder.BuildAndStart();
 }
 
-void Server::start() {
+void AsynchServer::start() {
     if (_running) {
         return;
     }
@@ -150,7 +150,7 @@ void Server::start() {
     _stopped = true;
 }
 
-void Server::stop() {
+void AsynchServer::stop() {
     _running = false;
     // always shutdown grpc_server BEFORE queue
     _grpcServer->Shutdown();
