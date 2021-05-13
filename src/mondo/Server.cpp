@@ -15,7 +15,7 @@
 
 using namespace mondo;
 
-Server::Server(const ConfigInterface* config) {
+Server::Server(const ConfigUtil::ConfigInterface* config) : _threads(2) {
 }
 
 // use this to expose a Config to remote control

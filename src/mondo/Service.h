@@ -29,35 +29,35 @@ public:
     bool isRunning() const { return _running; }
 
     // rpc StartSession (LoginRequest) returns (Input) {}
-    grpc::Status StartSession(
-            grpc::ServerContext* context,
-            const mondo::LoginRequest* request,
-            mondo::Input* reply) override final;
+    ::grpc::Status StartSession(
+            ::grpc::ServerContext* context,
+            const LoginRequest* request,
+            Input* response) override final;
 
     // rpc PollInOut (Input) returns (Output) {}
-    grpc::Status PollInOut(
-            grpc::ServerContext* context,
-            const mondo::Input* request,
-            mondo::Ouput* reply) override final;
+    ::grpc::Status PollInOut(
+            ::grpc::ServerContext* context,
+            const Input* request,
+            Output* response) override final;
 
     /*
     // rpc StreamIn (stream Input) returns (Output) {}
-    grpc::Status StreamIn(
-            grpc::ServerContext* context,
-            const mondo::Input* request,
-            mondo::Ouput* reply) override final;
+    ::grpc::Status StreamIn(
+            ::grpc::ServerContext* context,
+            const Input* request,
+            Output* response) override final;
 
     // rpc StreamOut (Input) returns (stream Output) {}
-    grpc::Status StreamOut(
-            grpc::ServerContext* context,
-            const mondo::Input* request,
-            mondo::Ouput* reply) override final;
+    ::grpc::Status StreamOut(
+            ::grpc::ServerContext* context,
+            const Input* request,
+            Output* response) override final;
 
     // rpc StreamInOut (stream Input) returns (stream Output) {}
-    grpc::Status StreamInOut(
-            grpc::ServerContext* context,
-            const mondo::Input* request,
-            mondo::Ouput* reply) override final;
+    ::grpc::Status StreamInOut(
+            ::grpc::ServerContext* context,
+            const Input* request,
+            Output* response) override final;
             */
 
 private:

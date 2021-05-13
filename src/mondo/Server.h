@@ -9,7 +9,7 @@
 
 #include <vector>
 
-#include <autogen/mondo_grpc_pb.h>
+//#include <autogen/mondo_grpc_pb.h>
 #include <util/ConfigUtil.h>
 #include <util/ThreadPool.h>
 
@@ -22,7 +22,7 @@ using Blobs = std::vector<Blob>;
 // Server has a Service and relays Blobs.
 class Server {
 public:
-    Server(const ConfigInterface* config);
+    Server(const ConfigUtil::ConfigInterface* config);
 
     // use this to expose a Config to remote control
     bool registerConfig(ConfigUtil::ConfigInterface* config);
@@ -46,7 +46,7 @@ private:
     //std::unique_ptr<Data_store> _data_store;
     //std::unique_ptr<Sora_service> _sora_service;
     //std::unique_ptr<Sora_engine> _sora_engine;
-    Service Service;
+    Service _service;
     bool _isRunning {false};
     bool _isStopped {false};
 };
