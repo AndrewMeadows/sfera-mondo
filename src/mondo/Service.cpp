@@ -16,11 +16,11 @@
 
 using namespace mondo:
 
-Service(int32_t port) : _port(port) {
+Service(int32_t port) : _grpcServicePort(port) {
     grpc::ServerBuilder builder;
 
     // listen without any authentication mechanism
-    std::string uri = fmt::format("[::]:{}", _port);
+    std::string uri = fmt::format("[::]:{}", _grpcServicePort);
     builder.AddListeningPort(uri, grpc::InsecureServerCredentials());
 
     // register ourselves as "synchronous" Service
@@ -28,7 +28,6 @@ Service(int32_t port) : _port(port) {
 
     // assemble the server
     _grpcServer = builder.BuildAndStart();
-
 }
 
 // call start() on devoted thread
@@ -53,9 +52,6 @@ void Service::stop() {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
-
-int32_t getPort() const { return _grpcServicePort; }
-bool isRunning() const { return _running; }
 
 // rpc StartSession (LoginRequest) returns (Input) {}
 grpc::Status Service::StartSession(

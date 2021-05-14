@@ -19,7 +19,8 @@ public:
 
     Service(int32_t port=0);
 
-    // call start() on devoted thread
+    // start() will block (doing threaded work) until stopped
+    // (e.g. call on devoted thread)
     void start();
 
     // stop() will block until threaded work is done
