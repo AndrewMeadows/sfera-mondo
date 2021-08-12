@@ -25,6 +25,10 @@ public:
     bool isValid(uint64_t id) const {
         return false;
     }
+
+    bool endSessionById(uint64_t id) {
+        return true;
+    }
 };
 
 using Data = google::protobuf::RepeatedPtrField<Blob>;
@@ -87,6 +91,12 @@ public:
             ::grpc::ServerContext* context,
             const LoginRequest* request,
             Input* response) override final;
+
+    // rpc EndSession (Input) returns (Output) {}
+    ::grpc::Status EndSession(
+            ::grpc::ServerContext* context,
+            const Input* request,
+            Output* response) override final;
 
     // rpc PollInOut (Input) returns (Output) {}
     ::grpc::Status PollInOut(

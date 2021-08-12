@@ -57,13 +57,13 @@ void Service::stop() {
 grpc::Status Service::StartSession(
         grpc::ServerContext* context,
         const LoginRequest* request,
-        Input* reply)
+        Input* response)
 {
     uint64_t sessionId = 0;
     if (_sessionManager) {
         sessionId = _sessionManager->getOrAddSessionId(request->user(), request->password());
     }
-    reply->set_secret(sessionId);
+    response->set_secret(sessionId);
     if (sessionId > 0) {
         if (_dataExchange) {
             _dataExchange->registerId(sessionId);
@@ -73,7 +73,7 @@ grpc::Status Service::StartSession(
             if (replyData) {
                 Data::const_iterator itr = replyData->begin();
                 while (itr != replyData->end()) {
-                    Blob* newBlob = reply->add_blobs();
+                    Blob* newBlob = response->add_blobs();
                     newBlob->set_type(itr->type());
                     newBlob->set_msg(itr->msg());
                     ++itr;
@@ -85,11 +85,26 @@ grpc::Status Service::StartSession(
     return grpc::Status::OK;
 }
 
+// rpc EndSession (Input) returns (Output) {}
+grpc::Status Service::EndSession(
+        ::grpc::ServerContext* context,
+        const Input* request,
+        Output* response)
+{
+    uint64_t sessionId = request->secret();
+    bool session_is_valid = _sessionManager && _sessionManager->isValid(sessionId);
+    if (session_is_valid) {
+        _sessionManager->endSessionById(sessionId);
+    }
+    response->set_success(true);
+    return grpc::Status::OK;
+}
+
 // rpc PollInOut (Input) returns (Output) {}
 grpc::Status Service::PollInOut(
         grpc::ServerContext* context,
         const Input* request,
-        Output* reply)
+        Output* response)
 {
     uint64_t sessionId = request->secret();
     bool session_is_valid = _sessionManager && _sessionManager->isValid(sessionId);
@@ -100,7 +115,7 @@ grpc::Status Service::PollInOut(
             if (replyData) {
                 Data::const_iterator itr = replyData->begin();
                 while (itr != replyData->end()) {
-                    Blob* newBlob = reply->add_blobs();
+                    Blob* newBlob = response->add_blobs();
                     newBlob->set_type(itr->type());
                     newBlob->set_msg(itr->msg());
                     ++itr;
@@ -109,7 +124,7 @@ grpc::Status Service::PollInOut(
             }
         }
     }
-    reply->set_success(session_is_valid);
+    response->set_success(session_is_valid);
     return grpc::Status::OK;
 }
 
@@ -118,7 +133,7 @@ grpc::Status Service::PollInOut(
 grpc::Status Service::StreamIn(
         grpc::ServerContext* context,
         const Input* request,
-        Output* reply)
+        Output* response)
 {
     return grpc::Status::OK;
 }
@@ -127,7 +142,7 @@ grpc::Status Service::StreamIn(
 grpc::Status Service::StreamOut(
         grpc::ServerContext* context,
         const Input* request,
-        Output* reply)
+        Output* response)
 {
     return grpc::Status::OK;
 }
@@ -136,7 +151,7 @@ grpc::Status Service::StreamOut(
 grpc::Status Service::StreamInOut(
         grpc::ServerContext* context,
         const Input* request,
-        Output* reply)
+        Output* response)
 {
     return grpc::Status::OK;
 }

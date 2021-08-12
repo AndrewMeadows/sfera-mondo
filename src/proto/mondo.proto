@@ -53,6 +53,7 @@ message Output {
 
 service DataService {
   rpc StartSession (LoginRequest) returns (Input) {}
+  rpc EndSession(Input) returns (Output) {}
   rpc PollInOut (Input) returns (Output) {}
   //rpc StreamIn (stream Input) returns (Output) {}
   //rpc StreamOut (Input) returns (stream Output) {}
