@@ -39,22 +39,20 @@ Server::~Server() {
 }
 
 void Server::start() {
-    if (!_service->isRunning()) {
-        _threads.enqueue([&]() { _service->start(); });
-    }
     if (!_running) {
         _running = true;
         _threads.enqueue([&]() { this->poll(); });
+        if (!_service->isRunning()) {
+            _threads.enqueue([&]() { _service->start(); });
+        }
     }
 }
 
 void Server::shutdown() {
-    if (_running) {
-        _running = false;
-        while (!_stopped) {
-            // wait for poll() thread to stop
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
+    _running = false;
+    while (!_stopped) {
+        // wait for poll() thread to stop
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
@@ -86,7 +84,9 @@ void Server::poll() {
 
         // TODO: do polling work here
 
-        uint64_t nap = std::min(MAX_NAP_DURATION, getMsecToNextFrame());
+        uint64_t now = TimeUtil::get_now_msec();
+        uint64_t nap = now > _frameExpiry ?
+            0 : std::min(MAX_NAP_DURATION, _frameExpiry - now);
         if (nap > 0) {
             //TRACE_CONTEXT("nap", "Server,nap");
             std::this_thread::sleep_for(std::chrono::milliseconds(nap));

@@ -20,7 +20,7 @@ package mondo;
 // to send/recieve custom arbitrary data (Blobs).
 
 // 'Blob' is like a MIME block: it has a 'type', and an embedded binary 'msg'
-// which can bye anything but the anticipated pattern is: it is a binary dump
+// which can be anything but the anticipated pattern is: it is a binary dump
 // of a protobuf message defined in some other proto file.  It is the
 // responsibility of each custom app to pack/unpack its Blobs.
 //

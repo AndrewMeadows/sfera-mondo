@@ -57,9 +57,6 @@ protected:
     ThreadPool _threads;
 
 private:
-    //std::unique_ptr<Data_store> _data_store;
-    //std::unique_ptr<Sora_service> _sora_service;
-    //std::unique_ptr<Sora_engine> _sora_engine;
     std::unique_ptr<Service> _service;
     uint64_t _framePeriod { DEFAULT_SERVER_FRAME_PERIOD }; // msec
     uint64_t _frameExpiry { 0 }; // msec

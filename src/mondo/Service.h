@@ -7,11 +7,56 @@
 //
 
 #include <memory>
+#include <vector>
 
 #include <grpcpp/grpcpp.h>
 #include <autogen/mondo.grpc.pb.h>
 
 namespace mondo {
+
+// SessionManager is interface for logins
+class SessionManager {
+public:
+    SessionManager() {}
+    uint64_t getOrAddSessionId(const std::string& u, const std::string& p) const {
+        return 0;
+    }
+
+    bool isValid(uint64_t id) const {
+        return false;
+    }
+};
+
+using Data = google::protobuf::RepeatedPtrField<Blob>;
+
+// DataExchange is arbiter for passing Data in (show) and out (borrow)
+// across thread boundaries for various session ids.
+class DataExchange {
+public:
+    DataExchange() {
+    }
+
+    bool registerId(uint64_t id) {
+        return false;
+    }
+
+    bool deregisterId(uint64_t id) {
+        return false;
+    }
+
+    void showData(uint64_t id, Data const* data) {
+    }
+
+    const Data* borrowData(uint64_t id) {
+        return nullptr;
+    }
+
+    void endBorrow(const Data* data) {
+    }
+
+private:
+    //std::unordered_map<uint64_t, DataChannel> _dataChannels;
+};
 
 // Service implements the missing DataService::Service methods.
 class Service : public DataService::Service {
@@ -19,8 +64,16 @@ public:
 
     Service(int32_t port=0);
 
+    void setSessionManager(SessionManager* sessions) {
+        _sessionManager = sessions;
+    }
+
+    void setDataExchange(DataExchange* exchange) {
+        _dataExchange = exchange;
+    }
+
     // start() will block (doing threaded work) until stopped
-    // (e.g. call on devoted thread)
+    // (e.g. call start() on devoted thread)
     void start();
 
     // stop() will block until threaded work is done
@@ -63,6 +116,8 @@ public:
 
 private:
     std::unique_ptr<grpc::Server> _grpcServer;
+    SessionManager* _sessionManager { nullptr };
+    DataExchange* _dataExchange { nullptr };
     int32_t _grpcServicePort { 0 };
     bool _running { false };
     bool _stopped { true };

@@ -3,6 +3,8 @@ set(TARGET_NAME mondo)
 add_library(${TARGET_NAME} STATIC
     Server.cpp
     Server.h
+    Service.cpp
+    Service.h
 )
 
 #target_include_directories(${TARGET_NAME} PUBLIC ${lib_dir})
